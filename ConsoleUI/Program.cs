@@ -58,7 +58,7 @@ namespace ConsoleUI
             //brandManager.Add(renaultBrand);
 
             Brand hyundaiBrand = new Brand()
-            {
+            { 
                 Id = 7,
                 Name = "Hyundai"
             };
