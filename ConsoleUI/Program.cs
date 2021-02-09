@@ -22,7 +22,7 @@ namespace ConsoleUI
                 Name = "BMW"
             };
             //brandManager.Add(bmwBrand);
-            Brand mercedesBrand = new Brand()
+            Brand mercedesBrand = new Brand() 
             {
                 Id = 2,
                 Name = "Mercedes-Benz"
