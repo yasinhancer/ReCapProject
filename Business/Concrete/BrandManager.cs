@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Resources;
 using System.Text;
+using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Abstract;
+using Core.Utilities.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
@@ -18,29 +22,58 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
-        public void Add(Brand brand)
+
+        public List<Brand> GetAll()
         {
-            using (DatabaseContext databaseContext = new DatabaseContext()) //using sayesinde, metot bittiği an, referansı dispose edecek (bellekten silme)
-            { 
+            return _brandDal.GetAll();
+        }
+
+        IDataResult<List<Brand>> IService<Brand>.GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        IResult IService<Brand>.Add(Brand brand)
+        {
+            using (DatabaseContext databaseContext = new DatabaseContext())
+            {
                 bool result = databaseContext.Brands.Contains(brand);
-                if (result != true)
+                if (result != true && brand.Name.Length >=3 )
                 {
                     _brandDal.Add(brand);
-                    Console.WriteLine(brand.Name + " markası sisteme eklendi.");
+                    Console.WriteLine("{0} {1}", brand.Name,Messages.Added);
+                    return new SuccessResult();
                 }
                 else
                 {
-                    Console.WriteLine(brand.Name + " markası zaten sistemde mevcut!");
+                    Console.WriteLine("{0}",Messages.InvalidEntry);
+                    return new ErrorResult();
                 }
+                
             }
         }
-        
 
-        public void Update(Brand brand)
+        IResult IService<Brand>.Update(Brand brand)
         {
-            _brandDal.Update(brand);
-        } 
-        public void Delete(Brand brand)
+            using (DatabaseContext databaseContext = new DatabaseContext())
+            {
+                bool result = databaseContext.Brands.Contains(brand);
+                if (result == true && brand.Name.Length >= 3)
+                {
+                    _brandDal.Update(brand);
+                    Console.WriteLine("{0} {1}", brand.Name, Messages.Updated);
+                    return new SuccessResult();
+                }
+                else
+                {
+                    Console.WriteLine("{0}", Messages.InvalidEntry);
+                    return new ErrorResult();
+                }
+
+            }
+        }
+
+        IResult IService<Brand>.Delete(Brand brand)
         {
             using (DatabaseContext databaseContext = new DatabaseContext())
             {
@@ -48,18 +81,15 @@ namespace Business.Concrete
                 if (result == true)
                 {
                     _brandDal.Delete(brand);
-                    Console.WriteLine(brand.Name + " markası sistemden silindi.");
+                    Console.WriteLine("{0} {1}", brand.Name, Messages.Deleted);
+                    return new SuccessResult();
                 }
                 else
                 {
-                    Console.WriteLine(brand.Name + " markası zaten sistemde mevcut değil!");
+                    Console.WriteLine("{0}", Messages.InvalidEntry);
+                    return new ErrorResult();
                 }
             }
-        }
-
-        public List<Brand> GetAll()
-        {
-            return _brandDal.GetAll();
         }
     }
 }

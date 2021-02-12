@@ -1,5 +1,6 @@
 ﻿using System;
 using Business.Concrete;
+using Business.Constants;
 using DataAccess.Concrete.EntityFramework;
 using Entities;
 using Entities.Concrete;
@@ -92,8 +93,9 @@ namespace ConsoleUI
                 Id = 4,
                 Name = "Mavi"
             };
-            //colorManager.Add(maviColor);
-            
+            colorManager.Add(maviColor);
+
+
             Color kırmızıColor = new Color()
             {
                 Id = 5,
@@ -131,7 +133,7 @@ namespace ConsoleUI
             //carManager.Add(car2);
             Car car3 = new Car()
             {
-                Id = 3,
+                Id = 3, 
                 BrandId = 5,
                 ColorId = 5,
                 DailyPrice = 249,
@@ -143,22 +145,39 @@ namespace ConsoleUI
             {
                 Id = 4,
                 BrandId = 3,
-                ColorId = 2,
+                ColorId = 2, 
                 DailyPrice = 699,
                 Description = "Audi A6 / Otomatik",
                 ModelYear = 2019
             };
-            //carManager.Add(car4);
-            //GetAllTest(carManager);
+            
+            Car car5 = new Car()
+            {
+                Id = 5,
+                BrandId = 3,
+                ColorId = 3,
+                DailyPrice = 449,
+                Description = "Audi A5 / Otomatik",
+                ModelYear = 2018
+            }; 
+            //carManager.Delete(car5);
+            //****************************************************************************************************************
 
+            //GetAllTest(carManager);
+            //GetCarDetailsTest(carManager);
+            
+
+
+        }
+
+        private static void GetCarDetailsTest(CarManager carManager)
+        {
             foreach (var carDetail in carManager.GetCarDetails())
             {
-                Console.WriteLine("Araç: {0} | Marka: {1} | Renk: {2} | Günlük Kiralama Bedeli {3}TL \n ",carDetail.CarName,carDetail.BrandName,
-                    carDetail.ColorName,carDetail.DailyPrice);
+                Console.WriteLine("Araç: {0} | Marka: {1} | Renk: {2} | Günlük Kiralama Bedeli {3}TL \n ", carDetail.CarName,
+                    carDetail.BrandName,
+                    carDetail.ColorName, carDetail.DailyPrice);
             }
-
-            
-            Console.ReadLine();
         }
 
         private static void UpdateTest(Car car1, CarManager carManager)

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Abstract;
+using Core.Utilities.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
@@ -17,31 +20,53 @@ namespace Business.Concrete
         {
             _colorDal = colorDal;
         }
-        public List<Color> GetAll()
-        {
-            return _colorDal.GetAll();
+
+        IDataResult<List<Color>> IService<Color>.GetAll()
+        { 
+            _colorDal.GetAll();
+            return new SuccessDataResult<List<Color>>();
         }
-        public void Add(Color color)
+
+        public IResult Add(Color color)
         {
             using (DatabaseContext databaseContext = new DatabaseContext())
             {
                 bool result = databaseContext.Colors.Contains(color);
-                if (result == true)
+                if (result != true && color.Name.Length >= 3)
                 {
-                    Console.WriteLine(color.Name + " renk zaten sistemde mevcut!");
+                    _colorDal.Add(color);
+                    Console.WriteLine("{0} {1}", color.Name, Messages.Added);
+                    return new SuccessResult();
                 }
                 else
                 {
-                    _colorDal.Add(color);
-                    Console.WriteLine(color.Name + " renk sisteme eklendi.");
+                    Console.WriteLine("{0}", Messages.InvalidEntry);
+                    return new ErrorResult();
+                }
+
+            }
+        }
+
+        public IResult Update(Color color)
+        {
+            using (DatabaseContext databaseContext = new DatabaseContext())
+            {
+                bool result = databaseContext.Colors.Contains(color);
+                if (result == true && color.Name.Length >= 3)
+                {
+                    _colorDal.Update(color);
+                    Console.WriteLine("{0} {1}", color.Name, Messages.Updated);
+                    return new SuccessResult();
+                }
+                else
+                {
+                    Console.WriteLine("{0}", Messages.InvalidEntry);
+                    return new ErrorResult();
                 }
             }
         }
-        public void Update(Color color)
-        {
-            _colorDal.Update(color);
-        }
-        public void Delete(Color color)
+
+        public IResult Delete(Color color)
         {
             using (DatabaseContext databaseContext = new DatabaseContext())
             {
@@ -49,11 +74,13 @@ namespace Business.Concrete
                 if (result == true)
                 {
                     _colorDal.Delete(color);
-                    Console.WriteLine(color.Name + " renk sistemden silindi.");
+                    Console.WriteLine("{0} {1}", color.Name, Messages.Deleted);
+                    return new SuccessResult();
                 }
                 else
                 {
-                    Console.WriteLine(color.Name + " renk zaten sistemde mevcut değil!");
+                    Console.WriteLine("{0}", Messages.InvalidEntry);
+                    return new ErrorResult();
                 }
             }
         }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Abstract;
+using Core.Utilities.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities;
@@ -19,31 +22,45 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
-        public void Add(Car car)
+        public IResult Add(Car car)
+        {
+            using (DatabaseContext databaseContext = new DatabaseContext())
+            {
+                bool result = databaseContext.Cars.Contains(car);
+                if (result != true && car.Description.Length >= 2 && car.DailyPrice > 0)
+                {
+                    _carDal.Add(car);
+                    Console.WriteLine("{0} {1}", car.Description,Messages.Added);
+                    return new SuccessResult();
+                }
+                else
+                {
+                    Console.WriteLine("{0} {1}", car.Description, Messages.SameEntry);
+                    return new ErrorResult();
+                }
+            }
+        }
+
+        public IResult Update(Car car)
         {
             using (DatabaseContext databaseContext = new DatabaseContext())
             {
                 bool result = databaseContext.Cars.Contains(car);
                 if (result == true)
                 {
-                    Console.WriteLine(car.Id + " numaralı araç zaten sistemde mevcut!");
+                    _carDal.Update(car);
+                    Console.WriteLine("{0} {1}", car.Description, Messages.Updated);
+                    return new SuccessResult();
                 }
                 else
                 {
-                    if (car.Description.Length >= 2 && car.DailyPrice > 0)
-                    {
-                        _carDal.Add(car);
-                        Console.WriteLine(car.Id + " numaralı araç sisteme eklendi.");
-                    }
+                    Console.WriteLine("{0} {1}", car.Description, Messages.InvalidData);
+                    return new ErrorResult();
                 }
             }
-        }
 
-        public void Update(Car car)
-        {
-            _carDal.Update(car);
         }
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
             using (DatabaseContext databaseContext = new DatabaseContext())
             {
@@ -51,11 +68,13 @@ namespace Business.Concrete
                 if (result == true)
                 {
                     _carDal.Delete(car);
-                    Console.WriteLine(car.Id + " numaralı araç sistemden silindi.");
+                    Console.WriteLine("{0} {1}",car.Description, Messages.Deleted);
+                    return new SuccessResult();
                 }
                 else
                 {
-                    Console.WriteLine(car.Id + " numaralı araç zaten sistemde mevcut değil!");
+                    Console.WriteLine("{0} {1}",car.Description, Messages.InvalidData);
+                    return new ErrorResult();
                 }
             }
         }
@@ -75,6 +94,11 @@ namespace Business.Concrete
         public List<CarDetailDto> GetCarDetails()
         {
             return new List<CarDetailDto>(_carDal.GetCarDetails());
+        }
+
+        IDataResult<List<Car>> IService<Car>.GetAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }
