@@ -35,7 +35,7 @@ namespace ConsoleUI
                 Id = 3,
                 Name = "Audi"
             };
-            //brandManager.Add(audiBrand); 
+            brandManager.Add(audiBrand); 
             
             Brand volkswagenBrand = new Brand()
             {

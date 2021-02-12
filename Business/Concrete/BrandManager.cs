@@ -33,7 +33,7 @@ namespace Business.Concrete
             throw new NotImplementedException();
         }
 
-        IResult IService<Brand>.Add(Brand brand)
+        public IResult Add(Brand brand)
         {
             using (DatabaseContext databaseContext = new DatabaseContext())
             {
@@ -53,7 +53,7 @@ namespace Business.Concrete
             }
         }
 
-        IResult IService<Brand>.Update(Brand brand)
+        public IResult Update(Brand brand)
         {
             using (DatabaseContext databaseContext = new DatabaseContext())
             {
@@ -73,7 +73,7 @@ namespace Business.Concrete
             }
         }
 
-        IResult IService<Brand>.Delete(Brand brand)
+        public IResult Delete(Brand brand)
         {
             using (DatabaseContext databaseContext = new DatabaseContext())
             {
