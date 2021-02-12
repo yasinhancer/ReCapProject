@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using DataAccess.Abstract;
 using Entities;
+using Entities.DTOs;
 
 namespace DataAccess.Concrete.InMemory
 {
-    class InMemoryCarDal 
+    class InMemoryCarDal : ICarDal
     {
         private List<Car> _cars;
 
@@ -20,7 +22,7 @@ namespace DataAccess.Concrete.InMemory
                     Id = 1, BrandId = 1, ColorId = 16, Description = "Son model bir BMW...", DailyPrice = 499,
                     ModelYear = 2020
                 }
-            };
+            }; 
         }
         
         public List<Car> GetById(int Id)
@@ -53,6 +55,21 @@ namespace DataAccess.Concrete.InMemory
             carToUpdate.ModelYear = car.ModelYear;
             carToUpdate.DailyPrice = car.DailyPrice;
             carToUpdate.Description = car.Description;
+        }
+
+        public List<CarDetailDto> GetCarDetails()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Car Get(Expression<Func<Car, bool>> filter)
+        {
+            throw new NotImplementedException();
         }
     }
 }

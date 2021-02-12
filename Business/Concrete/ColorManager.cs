@@ -17,45 +17,44 @@ namespace Business.Concrete
         {
             _colorDal = colorDal;
         }
-
-        DatabaseContext databaseContext = new DatabaseContext();
-
         public List<Color> GetAll()
         {
             return _colorDal.GetAll();
         }
-
         public void Add(Color color)
         {
-            bool result = databaseContext.Colors.Contains(color);
-            if (result == true)
+            using (DatabaseContext databaseContext = new DatabaseContext())
             {
-                Console.WriteLine(color.Name + " renk zaten sistemde mevcut!");
+                bool result = databaseContext.Colors.Contains(color);
+                if (result == true)
+                {
+                    Console.WriteLine(color.Name + " renk zaten sistemde mevcut!");
+                }
+                else
+                {
+                    _colorDal.Add(color);
+                    Console.WriteLine(color.Name + " renk sisteme eklendi.");
+                }
             }
-            else
-            {
-                _colorDal.Add(color);
-                Console.WriteLine(color.Name + " renk sisteme eklendi.");
-            }
-            
         }
-
         public void Update(Color color)
         {
             _colorDal.Update(color);
         }
-
         public void Delete(Color color)
         {
-            bool result = databaseContext.Colors.Contains(color);
-            if (result == true)
+            using (DatabaseContext databaseContext = new DatabaseContext())
             {
-                _colorDal.Delete(color);
-                Console.WriteLine(color.Name + " renk sistemden silindi.");
-            }
-            else
-            {
-                Console.WriteLine(color.Name + " renk zaten sistemde mevcut değil!");
+                bool result = databaseContext.Colors.Contains(color);
+                if (result == true)
+                {
+                    _colorDal.Delete(color);
+                    Console.WriteLine(color.Name + " renk sistemden silindi.");
+                }
+                else
+                {
+                    Console.WriteLine(color.Name + " renk zaten sistemde mevcut değil!");
+                }
             }
         }
     }

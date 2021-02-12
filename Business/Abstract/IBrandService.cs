@@ -7,6 +7,6 @@ using Entities.Concrete;
 namespace Business
 {
     public interface IBrandService : IService<Brand>
-    {
+    { 
     }
 }

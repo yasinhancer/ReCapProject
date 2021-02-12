@@ -3,60 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfColorDal : IColorDal
+    public class EfColorDal : EfEntityRepositoryBase<Color,DatabaseContext>,IColorDal
     {
-        public List<Color> GetAll(Expression<Func<Color, bool>> filter = null)
-        {
-            using (DatabaseContext context = new DatabaseContext())
-            {
-                return filter == null
-                    ? context.Set<Color>().ToList()
-                    : context.Set<Color>().Where(filter).ToList();
-            }
-        }
-
-        public Color Get(Expression<Func<Color, bool>> filter)
-        {
-            using (DatabaseContext context = new DatabaseContext())
-            {
-                return context.Set<Color>().SingleOrDefault(filter);
-            }
-        }
-
-        public void Add(Color entity)
-        {
-            using (DatabaseContext context = new DatabaseContext())
-            {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State = EntityState.Added;
-                context.SaveChanges();
-            }
-        }
-
-        public void Update(Color entity)
-        {
-            using (DatabaseContext context = new DatabaseContext())
-            {
-                var updatedEntity = context.Entry(entity);
-                updatedEntity.State = EntityState.Modified;
-                context.SaveChanges();
-            }
-        }
-
-        public void Delete(Color entity)
-        {
-            using (DatabaseContext context = new DatabaseContext())
-            {
-                var deletedEntity = context.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
-                context.SaveChanges();
-            }
-        }
+        
     }
 }
