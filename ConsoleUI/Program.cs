@@ -1,6 +1,7 @@
 ﻿using System;
 using Business.Concrete;
 using Business.Constants;
+using Core.Utilities.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using Entities;
 using Entities.Concrete;
@@ -35,7 +36,7 @@ namespace ConsoleUI
                 Id = 3,
                 Name = "Audi"
             };
-            brandManager.Add(audiBrand); 
+            //brandManager.Add(audiBrand); 
             
             Brand volkswagenBrand = new Brand()
             {
@@ -93,7 +94,7 @@ namespace ConsoleUI
                 Id = 4,
                 Name = "Mavi"
             };
-            colorManager.Add(maviColor);
+            //colorManager.Add(maviColor);
 
 
             Color kırmızıColor = new Color()
@@ -116,10 +117,10 @@ namespace ConsoleUI
                 BrandId = 1,
                 ColorId = 2,
                 DailyPrice = 1499,
-                Description = "BMW E60 M5",
+                Description = "E60 M5 / Otomatik Vites",
                 ModelYear = 2008
             };
-            //carManager.Add(car1);
+            //carManager.Update(car1);
             //UpdateTest(car1, carManager);
             Car car2 = new Car()
             {
@@ -127,56 +128,58 @@ namespace ConsoleUI
                 BrandId = 4,
                 ColorId = 1,
                 DailyPrice = 299,
-                Description = "Volkswagen Passat / Otomatik",
+                Description = "Passat / Otomatik Vites",
                 ModelYear = 2015
             };
-            //carManager.Add(car2);
+            //carManager.Update(car2);
             Car car3 = new Car()
             {
                 Id = 3, 
                 BrandId = 5,
                 ColorId = 5,
                 DailyPrice = 249,
-                Description = "Seat Leon / Otomatik",
+                Description = "Leon / Otomatik Vites",
                 ModelYear = 2008
             };
-            //carManager.Add(car3);
+            //carManager.Update(car3);
             Car car4 = new Car()
             {
                 Id = 4,
                 BrandId = 3,
                 ColorId = 2, 
                 DailyPrice = 699,
-                Description = "Audi A6 / Otomatik",
+                Description = "A6 / Otomatik Vites",
                 ModelYear = 2019
             };
-            
+            //carManager.Update(car4);
             Car car5 = new Car()
             {
                 Id = 5,
                 BrandId = 3,
                 ColorId = 3,
                 DailyPrice = 449,
-                Description = "Audi A5 / Otomatik",
+                Description = "A5 / Otomatik Vites",
                 ModelYear = 2018
             }; 
-            //carManager.Delete(car5);
+            //carManager.Update(car5);
             //****************************************************************************************************************
-
-            //GetAllTest(carManager);
-            //GetCarDetailsTest(carManager);
             
+            //GetAllTest(carManager);
+            GetCarDetailsTest(carManager);
 
 
+            Console.ReadLine();
         }
 
         private static void GetCarDetailsTest(CarManager carManager)
         {
-            foreach (var carDetail in carManager.GetCarDetails())
+            var result = carManager.GetCarDetails();
+            Console.WriteLine("***************************************************** Tüm Araçlarımız *****************************************************\n");
+            foreach (var car in result.Data)
             {
-                Console.WriteLine("Araç: {0} | Marka: {1} | Renk: {2} | Günlük Kiralama Bedeli {3}TL \n ", carDetail.CarName,
-                    carDetail.BrandName,
-                    carDetail.ColorName, carDetail.DailyPrice);
+                Console.WriteLine("Marka: {0} | Model: {1} | Renk: {2} | Günlük Kiralama Bedeli {3}TL \n ", car.BrandName,
+                    car.CarName,
+                    car.ColorName, car.DailyPrice);
             }
         }
 
@@ -188,7 +191,8 @@ namespace ConsoleUI
 
         private static void GetAllTest(CarManager carManager)
         {
-            foreach (var item in carManager.GetAll())
+            var result = carManager.GetAll();
+            foreach (var item in result.Data)
             {
                 Console.WriteLine(item.Id + " -> " + item.Description);
             }

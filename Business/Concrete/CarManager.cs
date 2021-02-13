@@ -78,27 +78,22 @@ namespace Business.Concrete
                 }
             }
         }
-        public List<Car> GetCarsByBrandId(int Id)
+        public IDataResult<List<Car>> GetCarsByBrandId(int Id)
         {
-            return _carDal.GetAll(a=>a.BrandId == Id);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(a => a.BrandId == Id));
         }
-        public List<Car> GetCarsByColorId(int Id)
+        public IDataResult<List<Car>> GetCarsByColorId(int Id)
         {
-            return _carDal.GetAll(a => a.ColorId == Id);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(a => a.ColorId == Id));
         }
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
         }
-
-        public List<CarDetailDto> GetCarDetails()
+        
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return new List<CarDetailDto>(_carDal.GetCarDetails());
-        }
-
-        IDataResult<List<Car>> IService<Car>.GetAll()
-        {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
     }
 }

@@ -23,14 +23,9 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
-        public List<Brand> GetAll()
+        public IDataResult<List<Brand>> GetAll()
         {
-            return _brandDal.GetAll();
-        }
-
-        IDataResult<List<Brand>> IService<Brand>.GetAll()
-        {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
         }
 
         public IResult Add(Brand brand)

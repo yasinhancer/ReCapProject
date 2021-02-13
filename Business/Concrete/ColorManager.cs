@@ -21,10 +21,9 @@ namespace Business.Concrete
             _colorDal = colorDal;
         }
 
-        IDataResult<List<Color>> IService<Color>.GetAll()
-        { 
-            _colorDal.GetAll();
-            return new SuccessDataResult<List<Color>>();
+        public IDataResult<List<Color>> GetAll()
+        {
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll());
         }
 
         public IResult Add(Color color)
@@ -43,7 +42,6 @@ namespace Business.Concrete
                     Console.WriteLine("{0}", Messages.InvalidEntry);
                     return new ErrorResult();
                 }
-
             }
         }
 
