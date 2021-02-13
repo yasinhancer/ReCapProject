@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Business.Abstract;
 using Entities.Concrete;
 
-namespace Business
+namespace Business.Abstract
 {
-    public interface IBrandService 
-    { 
+    public interface IRentalService
+    {
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Core.DataAccess;
 using Entities.Concrete;
 
-namespace Business.Abstract
+namespace DataAccess.Abstract
 {
-    public interface IColorService
+    public interface IUserDal : IEntityRepository<User>
     {
     }
 }

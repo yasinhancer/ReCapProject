@@ -1,7 +1,6 @@
 ﻿using System;
 using Business.Concrete;
 using Business.Constants;
-using Core.Utilities.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using Entities;
 using Entities.Concrete;
@@ -16,7 +15,10 @@ namespace ConsoleUI
             Console.WriteLine("");
             CarManager carManager = new CarManager(new EfCarDal());
             BrandManager brandManager = new BrandManager(new EfBrandDal());
-            ColorManager colorManager = new ColorManager(new EfColorDal()); 
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            UserManager userManager = new UserManager(new EfUserDal());
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
             
             Brand bmwBrand = new Brand()
             {
@@ -162,10 +164,16 @@ namespace ConsoleUI
                 ModelYear = 2018
             }; 
             //carManager.Update(car5);
+
+            customerManager.Add(new Customer
+            {
+                UserId = 1,
+                CompanyName = "ABCD COMPANY"
+            });
             //****************************************************************************************************************
             
             //GetAllTest(carManager);
-            GetCarDetailsTest(carManager);
+            //GetCarDetailsTest(carManager);
 
 
             Console.ReadLine();
@@ -188,7 +196,7 @@ namespace ConsoleUI
             car1.Description = "BMW E60 M5 / Otomatik";
             carManager.Update(car1);
         }
-
+         
         private static void GetAllTest(CarManager carManager)
         {
             var result = carManager.GetAll();

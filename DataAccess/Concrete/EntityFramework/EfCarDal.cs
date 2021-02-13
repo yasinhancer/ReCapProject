@@ -8,7 +8,7 @@ using DataAccess.Abstract;
 using Entities;
 using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
-
+ 
 namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCarDal : EfEntityRepositoryBase<Car,DatabaseContext>, ICarDal   
@@ -26,7 +26,7 @@ namespace DataAccess.Concrete.EntityFramework
                     {
                         BrandName = brand.Name, CarName = car.Description,
                         ColorName = color.Name, DailyPrice = car.DailyPrice
-                    };
+                    }; 
                 return result.ToList();
             }
         }
